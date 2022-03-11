@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goods">
+
+    <!-- 01. 상품 전체 목록 -->
+    <select id="list" resultType="car" parameterType="int">
+        select
+    c.car_id, c.car_name,b.brand_id, b.brand_name, c.car_img, b.brand_explain, b.brand_img
+        from car c
+            inner join brand b
+                on c.brand_id = b.brand_id           
+            where c.brand_id=#{brand_id}
+    </select>
+    
+    <!-- 02. 상품 디테일 -->
+    <select id="detail" resultType="car" parameterType="int">
+    	SELECT c.car_id, c.car_name, c.car_price, c.car_type, c.car_fuel, c.fuel_type, c.car_img,
+    			b.brand_name, c.brand_id
+    	FROM CAR c
+    		inner join brand b
+                on c.brand_id = b.brand_id
+    	WHERE c.CAR_ID = #{car_id}
+    </select>
+    
+    <!-- 03. 상품 컬러 -->
+    <select id="color" resultType="car" parameterType="int">
+    	SELECT c.car_id, color.color_0,color.color_1,color.color_2,color.color_3
+    	FROM CAR c
+    		inner join car_color color
+                on c.car_id = color.car_id
+    	WHERE color.CAR_ID =#{car_id}
+    </select>
+    
+    <!-- 04. 상품 전체 -->
+    <select id="all" resultType="car" parameterType="int">
+    	SELECT *
+    	FROM CAR
+    	ORDER BY car_id ASC
+    </select>
+    
+    <!-- 05. 상품 서치 -->
+    <select id="search" resultType="car" parameterType="String">
+   SELECT CAR_ID,CAR_TYPE,CAR_FUEL,CAR_NAME,CAR_PRICE,CAR_IMG,BRAND_ID
+   FROM CAR WHERE CAR_NAME LIKE '%'||#{keyword}||'%'
+    </select>
+    
+    <!-- 06. 상품 추가 -->
+    <insert id="add">
+	insert into CAR
+		(car_id,
+		car_name,
+		car_type,
+		fuel_type,
+		car_fuel,
+		car_price,
+		car_img,
+		brand_Id)
+	values
+		(CAR_SEQ2.NEXTVAL,
+		#{car_Name},
+		#{car_Type},
+		#{fuel_Type},
+		#{car_Fuel},
+		#{car_Price},
+		#{car_Img},
+		#{brand_Id})
+	</insert>
+	
+	<!-- 07. 상품 삭제 -->
+	<delete id="delete">
+	 delete from
+	     car
+	 where car_id = #{car_id}
+	</delete>
+	
+	<!-- 08. 상품 수정 -->
+	<update id="modify">
+	 update car
+	     set
+	         car_name = #{car_Name},
+	         car_type = #{car_Type},
+	         fuel_type = #{fuel_Type},
+	         car_fuel = #{car_Fuel},
+	         car_price = #{car_Price},
+	         car_img = #{car_Img},
+	         brand_id = #{brand_Id}
+	     where car_id = #{car_ID}
+	</update>
+	
+
+</mapper>

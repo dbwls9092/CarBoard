@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.newsMapper">
+
+<resultMap type="news" id="fullnewsInfo">
+	<id column="NEWS_ID" property="news_Id"/>
+	<result column="NEWS_TITLE" property="news_Title"/>
+	<result column="NEWS_CONTENT" property="news_Content"/>
+	<result column="NEWS_URL" property="news_Url"/>
+	<result column="NEWS_IMG" property="news_Img"/>
+	<result column="NEWS_DATE" property="news_Date"/>
+	<result column="NEWS_THUMB" property="news_Thumb"/>
+</resultMap>
+
+<select id="getOneNews" parameterType="_int" resultMap="fullnewsInfo">
+SELECT * FROM NEWS WHERE NEWS_ID = #{news_Id}
+</select>
+
+<select id="getNews" parameterType="news" resultMap="fullnewsInfo">
+SELECT * FROM NEWS
+</select>
+<select id="count" resultType="int">
+	SELECT COUNT(*) FROM NEWS
+</select>
+
+<delete id="delNews" parameterType="int">
+DELETE NEWS WHERE news_Id= #{news_Id}
+</delete>
+
+<insert id="insNews" parameterType="news" >
+INSERT INTO NEWS(NEWS_ID, NEWS_TITLE, NEWS_CONTENT, NEWS_URL, NEWS_IMG, NEWS_DATE, NEWS_THUMB)
+VALUES (NEWS_SEQ.NEXTVAL, #{news_Title}, #{news_Content}, #{news_Url}, #{news_Img}, SYSDATE, #{news_Thumb})
+</insert>
+
+<update id="updateNews" parameterType="news">
+UPDATE NEWS SET news_Title=#{news_Title}, news_Content=#{news_Content}, news_Url=#{news_Url}, news_Img=#{news_Img}
+WHERE news_Id=#{news_Id}
+
+</update>
+
+</mapper>
